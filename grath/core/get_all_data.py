@@ -20,7 +20,7 @@ def get_data_moex(date, active, login, password):
     headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101Firefox/66.0"}
     cookies = {'MicexPassportCert': s.cookies['MicexPassportCert']}
 
-    url = "https://iss.moex.com/iss/analyticalproducts/futoi/securities/si.json?from=" + date + "&till=" + date
+    url = "https://iss.moex.com/iss/analyticalproducts/futoi/securities/" + active[0:2] + ".json?from=" + date + "&till=" + date
     url2 = "http://iss.moex.com/iss/history/engines/futures/markets/forts/boards/RFUD/securities/" + active + ".json?from=" + date + "&till=" + date
     req = requests.get(url, headers=headers, cookies=cookies)
     req2 = requests.get(url2, headers=headers, cookies=cookies)

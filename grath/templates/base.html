@@ -14,6 +14,7 @@
     <script type="text/javascript" src="{% static "jquery/jquery.dataTables.min.js" %}"></script>
     <script type="text/javascript" src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
     <script type="text/javascript" src="{% static "celery_progress/celery_progress.js" %}"></script>
+    <script type="text/javascript" src="{% static "plotly.min.js" %}"></script>
     {% block scripts %} {% endblock %}
 
     <style>
@@ -40,23 +41,34 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Графики
+              Графики по данным
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Открытые позиции. Юридические лица (Длинные)</a>
-              <a class="dropdown-item" href="#">Открытые позиции. Юридические лица (Короткие)</a>
+              <a class="dropdown-item" href="{% url "gropyl" %}">Открытые позиции. Юридические лица (Длинные)</a>
+              <a class="dropdown-item" href="{% url "gropys" %}">Открытые позиции. Юридические лица (Короткие)</a>
+              <a class="dropdown-item" href="{% url "gropfl" %}">Открытые позиции. Физические лица (Длинные)</a>
+              <a class="dropdown-item" href="{% url "gropfs" %}">Открытые позиции. Физические лица (Короткие)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Открытые позиции. Физические лица (Длинные)</a>
-              <a class="dropdown-item" href="#">Открытые позиции. Физические лица (Короткие)</a>
+              <a class="dropdown-item" href="{% url "grcpyl" %}">Количество лиц. Юридические лица (Длинные)</a>
+              <a class="dropdown-item" href="{% url "grcpys" %}">Количество лиц. Юридические лица (Короткие)</a>
+              <a class="dropdown-item" href="{% url "grcpfl" %}">Количество лиц. Физические лица (Длинные)</a>
+              <a class="dropdown-item" href="{% url "grcpfs" %}">Количество лиц. Физические лица (Короткие)</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Онлайн-графики
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="{% url "online_opyl" %}">Открытые позиции. Юридические лица (Длинные)</a>
+              <a class="dropdown-item" href="{% url "online_opys" %}">Открытые позиции. Юридические лица (Короткие)</a>
+              <a class="dropdown-item" href="{% url "online_opfl" %}">Открытые позиции. Физические лица (Длинные)</a>
+              <a class="dropdown-item" href="{% url "online_opfs" %}">Открытые позиции. Физические лица (Короткие)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Количество лиц. Юридические лица (Длинные)</a>
-              <a class="dropdown-item" href="#">Количество лиц. Юридические лица (Короткие)</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Количество лиц. Физические лица (Длинные)</a>
-              <a class="dropdown-item" href="#">Количество лиц. Физические лица (Короткие)</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Открытые позиции. Итого</a>
-              <a class="dropdown-item" href="#">Количество лиц. Итого</a>
+              <a class="dropdown-item" href="{% url "online_cpyl" %}">Количество лиц. Юридические лица (Длинные)</a>
+              <a class="dropdown-item" href="{% url "online_cpys" %}">Количество лиц. Юридические лица (Короткие)</a>
+              <a class="dropdown-item" href="{% url "online_cpfl" %}">Количество лиц. Физические лица (Длинные)</a>
+              <a class="dropdown-item" href="{% url "online_cpfs" %}">Количество лиц. Физические лица (Короткие)</a>
             </div>
           </li>
         </ul>

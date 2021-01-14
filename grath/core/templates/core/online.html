@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{load static}
+{% csrf_token %}
+
+{% block title %} Онлайн {% endblock %}
+
+{% block styles %}
+  <style>
+   #chart{
+        margin-top: 65px;
+        margin-left: 10px;
+        margin-right: 10px;
+   }
+   </style>
+
+{% endblock %}
+
+{% block content %}
+
+<div id="chart"></div>
+<script>
+    let p = document.getElementById('chart');
+    {% if islogin %}
+        let ox = [];
+        let data = {{data}};
+        {% for line in dt %}
+            ox.push('{{line}}');
+        {% endfor %} 
+
+        if (ox.length === 0){ 
+            alert('Сегодня торги не проводились!');
+            document.location.replace("{% url "main_url" %}");}
+        else{
+            let layout = {
+                title: {text:"{{title}}"},
+                xaxis: {type: 'date',title: ''},
+                yaxis: {title: ''},
+            };
+            
+            Plotly.plot('chart',[{
+                x:ox,
+                y:{{data}},
+                type:'line',
+            }],layout);
+        } 
+        setInterval(function(){ 
+            window.location.reload();   
+        },30000);  
+    {% else %}
+        {% if message != '' %}
+            alert('{{message}}!');
+            document.location.replace("{% url "main_url" %}");
+        {% else %}
+            alert('Введите учетные данные, чтобы сохранить их в cookie!');
+            document.location.replace("{% url "main_url" %}");
+        {% endif %}
+    {% endif %}
+
+</script>
+
+{% endblock %}
