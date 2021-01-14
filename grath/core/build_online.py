@@ -80,42 +80,42 @@ def get_context_online(param, request):
         
         if param == 'opyl':
             context.update({
-                'data':opyl[::-1],
+                'data':opyl,
                 'title':'Онлайн-график «Открытые позиции. Юридические лица (Длинные)» за ' + date,
             })
         elif param == 'opys':
             context.update({
-                'data':opys[::-1],
+                'data':opys,
                 'title':'Онлайн-график «Открытые позиции. Юридические лица (Короткие)» за ' + date,
             })
         elif param == 'opfl':
             context.update({
-                'data':opfl[::-1],
+                'data':opfl,
                 'title':'Онлайн-график «Открытые позиции. Физические лица (Длинные)» за ' + date,
             })
         elif param == 'opfs':
             context.update({
-                'data':opfs[::-1],
+                'data':opfs,
                 'title':'Онлайн-график «Открытые позиции. Физические лица (Короткие)» за ' + date,
             })
         elif param == 'cpyl':
             context.update({
-                'data':cpyl[::-1],
+                'data':cpyl,
                 'title':'Онлайн-график «Количество лиц. Юридические лица (Длинные)» за ' + date,
             })
         elif param == 'cpys':
             context.update({
-                'data':cpys[::-1],
+                'data':cpys,
                 'title':'Онлайн-график «Количество лиц. Юридические лица (Короткие)» за ' + date, 
             })
         elif param == 'cpfl':
             context.update({
-                'data':cpfl[::-1],
+                'data':cpfl,
                 'title':'Онлайн-график «Количество лиц. Физические лица (Длинные)» за ' + date,
             })
         elif param == 'cpfs':
             context.update({
-                'data':cpfs[::-1],
+                'data':cpfs,
                 'title':'Онлайн-график «Количество лиц. Физические лица (Короткие)» за ' + date,
             })
         return context
