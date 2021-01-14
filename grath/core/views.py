@@ -2,22 +2,19 @@ import time
 from datetime import datetime
 import pandas as pd
 
-from celery.contrib.abortable import AbortableAsyncResult
 from django.shortcuts import render
 from django.views import View
 from .models import Data
-from .tasks import get_data_celery
-from grath.celery import get_inspect, revoke_task
 
 from .build_grath import get_context_grath
 from .build_online import get_context_online
+from .build_main import get_context_main
+
 
 login = ''
 password = ''
 active = ''
 date_begin = str(datetime.now().date())
-task_id = None
-
 
 class Main_view(View):
     def post(self, request):
@@ -28,25 +25,8 @@ class Main_view(View):
         password = request.POST.get('password')
         active = request.POST.get('active')
 
-        for desktop in get_inspect().active().values():
-            for task in desktop:
-                del_task = AbortableAsyncResult(task['id'])
-                while not str(del_task.status) == 'SUCCESS':
-                    del_task.abort()
-                    time.sleep(1)
+        context = get_context_main(date_begin, date_end, login, password, active)
 
-        task = get_data_celery.delay(date_begin, date_end, login, password, active)
-
-        global task_id
-        task_id = task.task_id
-        
-        context={
-            'login': login, 
-            'password': password,
-            'date': date_begin, 
-            'active': active,
-            'task_id': task_id
-        }
         response = render(request, 'core/main.html', context=context)
         response.set_cookie('login', login)
         response.set_cookie('password', password)
@@ -61,7 +41,7 @@ class Main_view(View):
             'password': password, 
             'date': date_begin, 
             'active': active,
-            'task_id': task_id
+            'message': '',
         }
         return render(request, 'core/main.html',context=context)
 
@@ -70,7 +50,6 @@ class Data_view(View):
     def get(self, request):
         all_data = Data.objects.all()
         return render(request, 'core/data.html', context={'data': all_data})
-
 
 
 

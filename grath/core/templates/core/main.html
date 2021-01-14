@@ -32,7 +32,7 @@
 {% endblock %}
 
 {% block scripts %}
-    <script>
+    {% comment %} <script>
     $(document).ready(function(){
       $('.toast').toast('show');
     });
@@ -44,7 +44,7 @@
             var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
             CeleryProgressBar.initProgressBar(progressUrl);
         });
-    </script>
+    </script> {% endcomment %}
 {% endblock %}
 
 {% block content %}
@@ -82,15 +82,27 @@
                 <input id="input_active" type="text" placeholder="Код актива" class="form-control" name="active" value="{{ active }}">
               </div>
               <div class="col-2">
-                <input id="progress-bar-submit" type="submit" class="btn btn-secondary" value="Получить данные">
+                <script language="javascript">
+                    function b()
+                    {alert('После нажатия кнопки «OK» начнется загрузка данных. Не закрывайте страницу до появления сообщения об ее окончании');}        
+                </script>
+                <input id="progress-bar-submit" type="submit" class="btn btn-secondary" value="Получить данные" OnClick="b();">
               </div>
             </div>
         </form>
     </div>
-    {% if not task_id is None %}
+    <script>
+      {% if message != '' %}
+        alert('{{message}}');
+      {% endif %}
+    </script>
+    {% comment %} {% if not task_id is None %}
         <div class='progress-wrapper dir-bar'>
             <div id='progress-bar' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
         </div>
         <div id="progress-bar-message" class="dir-line"></div>
-    {% endif %}
+    {% endif %} {% endcomment %}
+    
+
+    
 {% endblock %}

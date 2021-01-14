@@ -35,7 +35,7 @@ def get_data_moex(date, active, login, password):
     return all_data_on_one_day
 
 
-def push_data(data, dop_data, count, count_all, progress_recoder):
+def push_data(data, dop_data):
     for i in range(0, len(data) - 1, 2):
         try:
             Data.objects.create(
@@ -60,8 +60,3 @@ def push_data(data, dop_data, count, count_all, progress_recoder):
         except Exception as err:
             print(err)
             continue
-        finally:
-            progress_recoder.set_progress(count, count_all, f'Идет процесс добавления данных в таблицу. Повторный '
-                                                            f'запрос данных до завершения всех операций нежелателен!')
-            count += 1
-    return count
