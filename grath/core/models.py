@@ -1,8 +1,5 @@
 from django.db import models
 
-
-# Create your models here.
-
 class Data(models.Model):
     datetime = models.CharField(primary_key=True, max_length=20)
     open_pos_yur_long = models.IntegerField()

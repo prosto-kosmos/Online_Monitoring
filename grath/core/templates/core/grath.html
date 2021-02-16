@@ -3,65 +3,21 @@
 
 {% block title %} Графики {% endblock %}
 
-{% block styles %}
-  <style>
-   #chart{
-        margin-top: 65px;
-        margin-left: 10px;
-        margin-right: 10px;
-   }
-   </style>
-
-{% endblock %}
-
 {% block content %}
-{% comment %}
-<div class="tabs-custom tabs-horizontal tabs-line tabs-line-big tabs-line-style-2 text-center text-md-left" id="tabs-7"> 
-     <!-- Nav tabs-->
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-7-1" data-toggle="tab">Юридические лица (Длинные)</a></li>
-        <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-7-2" data-toggle="tab">Юридические лица (Короткие)</a></li>
-        <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-7-3" data-toggle="tab">Физические лица (Длинные)</a></li>
-        <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-7-4" data-toggle="tab">Физические лица (Короткие)</a></li>
-    </ul>
-
-    <!-- Tab panes-->
-    <div class="tab-content" id="ediv">
-        <div class="tab-pane fade show active" id="tabs-7-1" role="tabpanel">
-            <div id="chart-1"></div>       
-        </div>
-
-        <div class="tab-pane fade" id="tabs-7-2" role="tabpanel">
-        
-            <div id="chart-2" style ="width:1000px;"></div>   
-            <script>
-                $(document).ready(function(){
-                    var w=$("#chart-1").outerWidth();
-                    var ww=$("#chart-2").outerWidth();
-                    alert(w);
-                    alert(ww);
-                    $("#chart-2").css({"width":w});
-                    alert(ww);
-                });
-            </script>
-        </div>
-
-        <div class="tab-pane fade" id="tabs-7-3" role="tabpanel">
-            <div id="chart-3" style ="width:1000px;"></div>         
-        </div>
-
-        <div class="tab-pane fade" id="tabs-7-4"role="tabpanel">
-            <div id="chart-4" style ="width:1000px;"></div>        
-        </div>
-       
-    </div> 
-    </div>  
-</div>{% endcomment %}
-
-<div id="chart"></div>
+<div class="wrapper_chart_top">
+    <div id="chart_2" class = "chart_part"></div>
+    <div id="chart_4" class = "chart_part"></div>
+</div>
+<div class="wrapper_chart">
+    <div id="chart_1" class = "chart_part"></div>
+    <div id="chart_3" class = "chart_part"></div>
+</div>
 <script>
     let ox = [];
-    let data = {{data}};
+    // let data_1 = {{data_1}};
+    // let data_2 = {{data_2}};
+    // let data_3 = {{data_3}};
+    // let data_4 = {{data_4}};
     
     {% for line in dt %}
         ox.push('{{line}}');
@@ -104,20 +60,58 @@
         {% endfor %}                    
         sh.shift();
         
-        let layout = {
-            title: {text:"{{title}}" + ox[0] + ' по ' + ox[ox.length - 1],},
+        let layout_1 = {
+            title: {text:'{{title_1}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1],},
+            xaxis: {type: 'date',title: ''},
+            yaxis: {title: ''},
+            shapes: sh
+        };
+        let layout_2 = {
+            title: {text:'{{title_2}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1],},
+            xaxis: {type: 'date',title: ''},
+            yaxis: {title: ''},
+            shapes: sh
+        };
+        let layout_3 = {
+            title: {text:'{{title_3}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1],},
+            xaxis: {type: 'date',title: ''},
+            yaxis: {title: ''},
+            shapes: sh
+        };
+        let layout_4 = {
+            title: {text:'{{title_4}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1], size: '8'},
             xaxis: {type: 'date',title: ''},
             yaxis: {title: ''},
             shapes: sh
         };
 
-        Plotly.plot('chart',[{
+        Plotly.plot('chart_1',[{
             x:ox,
-            y:{{data}},
+            y:{{data_1}},
             type:'line',
-            line : {color: 'red'}
-        }],layout);       
+            line : {color: 'green'},
+        }],layout_1);  
+
+        Plotly.plot('chart_2',[{
+            x:ox,
+            y:{{data_2}},
+            type:'line',
+            line : {color: 'red'},
+        }],layout_2); 
+
+        Plotly.plot('chart_3',[{
+            x:ox,
+            y:{{data_3}},
+            type:'line',
+            line : {color: 'green'},
+        }],layout_3); 
+
+        Plotly.plot('chart_4',[{
+            x:ox,
+            y:{{data_4}},
+            type:'line',
+            line : {color: 'red'},
+        }],layout_4);      
     } 
 </script>
-
 {% endblock %}

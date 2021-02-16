@@ -32,52 +32,40 @@ def get_context_grath(param):
             'weekends': weekend,
         }
 
-        if param == 'opyl':
+        if param == 'gr_data_op':
             context.update({
-                'data':opyl[::-1],
-                'title':'График «Открытые позиции. Юридические лица (Длинные)» с ',
+                'data_1':opyl[::-1],
+                'data_2':opys[::-1],
+                'data_3':opfl[::-1],
+                'data_4':opfs[::-1],
+                'title_1':'График «Открытые позиции. Юридические лица (Длинные)»',
+                'title_2':'График «Открытые позиции. Юридические лица (Короткие)»',
+                'title_3':'График «Открытые позиции. Физические лица (Длинные)»',
+                'title_4':'График «Открытые позиции. Физические лица (Короткие)»',
             })
-        elif param == 'opys':
+        elif param == 'gr_data_np':
             context.update({
-                'data':opys[::-1],
-                'title':'График «Открытые позиции. Юридические лица (Короткие)» с ',
-            })
-        elif param == 'opfl':
-            context.update({
-                'data':opfl[::-1],
-                'title':'График «Открытые позиции. Физические лица (Длинные)» с ',
-            })
-        elif param == 'opfs':
-            context.update({
-                'data':opfs[::-1],
-                'title':'График «Открытые позиции. Физические лица (Короткие)» с '
-            })
-        elif param == 'cpyl':
-            context.update({
-                'data':cpyl[::-1],
-                'title':'График «Количество лиц. Юридические лица (Длинные)» с '
-            })
-        elif param == 'cpys':
-            context.update({
-                'data':cpys[::-1],
-                'title':'График «Количество лиц. Юридические лица (Короткие)» с ',
-            })
-        elif param == 'cpfl':
-            context.update({
-                'data':cpfl[::-1],
-                'title':'График «Количество лиц. Физические лица (Длинные)» с ',
-            })
-        elif param == 'cpfs':
-            context.update({
-                'data':cpfs[::-1],
-                'title':'График «Количество лиц. Физические лица (Короткие)» с '
+                'data_1':cpyl[::-1],
+                'data_2':cpys[::-1],
+                'data_3':cpfl[::-1],
+                'data_4':cpfs[::-1],
+                'title_1':'График «Количество лиц. Юридические лица (Длинные)»',
+                'title_2':'График «Количество лиц. Юридические лица (Короткие)»',
+                'title_3':'График «Количество лиц. Физические лица (Длинные)»',
+                'title_4':'График «Количество лиц. Физические лица (Короткие)»',
             })
         return context
     else: 
         context = {
             'dt':[],
-            'data': [],
-            'title':'',
+            'data_1': [],
+            'data_2': [],
+            'data_3': [],
+            'data_4': [],
+            'title_1':'',
+            'title_2':'',
+            'title_3':'',
+            'title_4':'',
             'all_date': [],
             'weekends': []
         }

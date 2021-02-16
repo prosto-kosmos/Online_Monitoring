@@ -4,47 +4,106 @@
 
 {% block title %} Онлайн {% endblock %}
 
-{% block styles %}
-  <style>
-   #chart{
-        margin-top: 65px;
-        margin-left: 10px;
-        margin-right: 10px;
-   }
-   </style>
-
-{% endblock %}
-
 {% block content %}
 
-<div id="chart"></div>
+<div class="wrapper_chart_top">
+    <div id="chart_2" class = "chart_part"></div>
+    <div id="chart_4" class = "chart_part"></div>
+</div>
+<div class="wrapper_chart">
+    <div id="chart_1" class = "chart_part"></div>
+    <div id="chart_3" class = "chart_part"></div>
+</div>
+
 <script>
-    let p = document.getElementById('chart');
+    // let p = document.getElementById('chart');
     {% if islogin %}
         let ox = [];
-        let data = {{data}};
+        var today = new Date();
+        // let data = {{data}};
         {% for line in dt %}
             ox.push('{{line}}');
         {% endfor %} 
+        var countPoints = ox.length;
 
-        if (ox.length === 0){ 
-            alert('Сегодня торги не проводились!');
+        if (countPoints === 0){ 
+            alert('Сегодня, ' + today.toLocaleDateString() + ', торги не проводились!');
             document.location.replace("{% url "main_url" %}");}
         else{
-            let layout = {
-                title: {text:"{{title}}"},
+            let layout_1 = {
+                title: {text:'{{title_1}}<br>за ' + today.toLocaleDateString()},
                 xaxis: {type: 'date',title: ''},
                 yaxis: {title: ''},
             };
-            
-            Plotly.plot('chart',[{
+            let layout_2 = {
+                title: {text:'{{title_2}}<br>за ' + today.toLocaleDateString()},
+                xaxis: {type: 'date',title: ''},
+                yaxis: {title: ''},
+            };
+            let layout_3 = {
+                title: {text:'{{title_3}}<br>за ' + today.toLocaleDateString()},
+                xaxis: {type: 'date',title: ''},
+                yaxis: {title: ''},
+            };
+            let layout_4 = {
+                title: {text:'{{title_4}}<br>за ' + today.toLocaleDateString()},
+                xaxis: {type: 'date',title: ''},
+                yaxis: {title: ''},
+            };
+
+            Plotly.plot('chart_1',[{
                 x:ox,
-                y:{{data}},
+                y:{{data_1}},
                 type:'line',
-            }],layout);
+                line : {color: 'green'},
+            }],layout_1);
+
+            Plotly.plot('chart_2',[{
+                x:ox,
+                y:{{data_2}},
+                type:'line',
+                line : {color: 'red'},
+            }],layout_2);
+
+            Plotly.plot('chart_3',[{
+                x:ox,
+                y:{{data_3}},
+                type:'line',
+                line : {color: 'green'},
+            }],layout_3);
+
+            Plotly.plot('chart_4',[{
+                x:ox,
+                y:{{data_4}},
+                type:'line',
+                line : {color: 'red'},
+            }],layout_4);
         } 
         setInterval(function(){ 
-            window.location.reload();   
+            $.ajax({
+                url: '{% url "get_new_points" %}',
+                method: 'post',
+                dataType: 'json',
+                data: {
+                    text: countPoints.toString(10),
+                    param: '{{param}}',
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },     
+                success: function(data){ 
+                    var newX = data['x'];
+                    var newY1 = data['y1'];
+                    var newY2 = data['y2'];
+                    var newY3 = data['y3'];
+                    var newY4 = data['y4'];
+                    if(newX.length != 0){
+                        Plotly.extendTraces('chart_1', {x: [newX], y: [newY1]} , [0]);
+                        Plotly.extendTraces('chart_2', {x: [newX], y: [newY2]} , [0]);
+                        Plotly.extendTraces('chart_3', {x: [newX], y: [newY3]} , [0]);
+                        Plotly.extendTraces('chart_4', {x: [newX], y: [newY4]} , [0]);
+                        countPoints+=newX.length
+                    }
+                }
+            });   
         },30000);  
     {% else %}
         {% if message != '' %}

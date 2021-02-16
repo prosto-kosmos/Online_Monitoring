@@ -1,13 +1,16 @@
 import time
 from datetime import datetime
 import pandas as pd
+import json
 
 from django.shortcuts import render
 from django.views import View
 from .models import Data
+from django.http import HttpResponse
 
 from .build_grath import get_context_grath
 from .build_online import get_context_online
+from .build_online import get_new_points
 from .build_main import get_context_main
 
 
@@ -55,86 +58,29 @@ class Data_view(View):
 
 
 
-class Gropyl_view(View):
+class GrDataOP_view(View):
     def get(self, request):
-        context = get_context_grath('opyl')
+        context = get_context_grath('gr_data_op')
         return render(request, 'core/grath.html', context=context)
 
-class Gropys_view(View):
+class GrDataNP_view(View):
     def get(self, request):
-        context = get_context_grath('opys')
+        context = get_context_grath('gr_data_np')
         return render(request, 'core/grath.html', context=context)
 
-class Gropfl_view(View):
+class GrOnlineOP_view(View):
     def get(self, request):
-        context = get_context_grath('opfl')
-        return render(request, 'core/grath.html', context=context)
+        context = get_context_online('gr_online_op', request)
+        return render(request, 'core/online.html', context=context)
 
-class Gropfs_view(View):
+class GrOnlineNP_view(View):
     def get(self, request):
-        context = get_context_grath('opfs')
-        return render(request, 'core/grath.html', context=context)       
+        context = get_context_online('gr_online_np', request)
+        return render(request, 'core/online.html', context=context) 
 
-class Grcpyl_view(View):
-    def get(self, request):
-        context = get_context_grath('cpyl')
-        return render(request, 'core/grath.html', context=context)
-
-class Grcpys_view(View):
-    def get(self, request):
-        context = get_context_grath('cpys')
-        return render(request, 'core/grath.html', context=context)
-
-class Grcpfl_view(View):
-    def get(self, request):
-        context = get_context_grath('cpfl')
-        return render(request, 'core/grath.html', context=context)
-
-class Grcpfs_view(View):
-    def get(self, request):
-        context = get_context_grath('cpfs')
-        return render(request, 'core/grath.html', context=context) 
-
-
-
-
-
-class Online_opyl_view(View):
-    def get(self, request):
-        context = get_context_online('opyl', request) 
-        return render(request, 'core/online.html', context)     
-
-class Online_opys_view(View):
-    def get(self, request):
-        context = get_context_online('opys', request)
-        return render(request, 'core/online.html', context) 
-
-class Online_opfl_view(View):
-    def get(self, request):
-        context = get_context_online('opfl', request)
-        return render(request, 'core/online.html', context) 
-
-class Online_opfs_view(View):
-    def get(self, request):
-        context = get_context_online('opfs', request)
-        return render(request, 'core/online.html', context)
-
-class Online_cpyl_view(View):
-    def get(self, request):
-        context = get_context_online('cpyl', request)
-        return render(request, 'core/online.html', context)
-
-class Online_cpys_view(View):
-    def get(self, request):
-        context = get_context_online('cpys', request)
-        return render(request, 'core/online.html', context)
-
-class Online_cpfl_view(View):
-    def get(self, request):
-        context = get_context_online('cpfl', request)
-        return render(request, 'core/online.html', context) 
-
-class Online_cpfs_view(View):
-    def get(self, request):
-        context = get_context_online('cpfs', request)
-        return render(request, 'core/online.html', context) 
+class GetNewPoints_view(View):
+    def post(self, request):
+        count_points = int(json.loads(request.POST.get('text')))
+        param = request.POST.get('param')
+        new_points = get_new_points(count_points, request, param)
+        return HttpResponse(new_points)

@@ -18,9 +18,23 @@
     {% block scripts %} {% endblock %}
 
     <style>
-        body{
-            background-color: withe;
-        }
+    .chart_part{
+        width: 50%;
+    }
+    .wrapper_chart_top {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 75px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .wrapper_chart {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
     </style>
 
 
@@ -34,42 +48,22 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="{% url "main_url" %}">Главная</a>
+            <a class="nav-link" href="{% url "main_url" %}">Главная<br>страница</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "data_url" %}">Данные</a>
+            <a class="nav-link" href="{% url "data_url" %}">Таблица<br>данных</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Графики по данным
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="{% url "gropyl" %}">Открытые позиции. Юридические лица (Длинные)</a>
-              <a class="dropdown-item" href="{% url "gropys" %}">Открытые позиции. Юридические лица (Короткие)</a>
-              <a class="dropdown-item" href="{% url "gropfl" %}">Открытые позиции. Физические лица (Длинные)</a>
-              <a class="dropdown-item" href="{% url "gropfs" %}">Открытые позиции. Физические лица (Короткие)</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url "grcpyl" %}">Количество лиц. Юридические лица (Длинные)</a>
-              <a class="dropdown-item" href="{% url "grcpys" %}">Количество лиц. Юридические лица (Короткие)</a>
-              <a class="dropdown-item" href="{% url "grcpfl" %}">Количество лиц. Физические лица (Длинные)</a>
-              <a class="dropdown-item" href="{% url "grcpfs" %}">Количество лиц. Физические лица (Короткие)</a>
-            </div>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "gr_data_op" %}">Графики по данным.<br>Открытые позиции</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Онлайн-графики
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="{% url "online_opyl" %}">Открытые позиции. Юридические лица (Длинные)</a>
-              <a class="dropdown-item" href="{% url "online_opys" %}">Открытые позиции. Юридические лица (Короткие)</a>
-              <a class="dropdown-item" href="{% url "online_opfl" %}">Открытые позиции. Физические лица (Длинные)</a>
-              <a class="dropdown-item" href="{% url "online_opfs" %}">Открытые позиции. Физические лица (Короткие)</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url "online_cpyl" %}">Количество лиц. Юридические лица (Длинные)</a>
-              <a class="dropdown-item" href="{% url "online_cpys" %}">Количество лиц. Юридические лица (Короткие)</a>
-              <a class="dropdown-item" href="{% url "online_cpfl" %}">Количество лиц. Физические лица (Длинные)</a>
-              <a class="dropdown-item" href="{% url "online_cpfs" %}">Количество лиц. Физические лица (Короткие)</a>
-            </div>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "gr_data_np" %}">Графики по данным.<br>Количество лиц</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "gr_online_op" %}">Онлайн-графики.<br>Открытые позиции</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "gr_online_np" %}">Онлайн-графики.<br>Количество лиц</a>
           </li>
         </ul>
       </div>
