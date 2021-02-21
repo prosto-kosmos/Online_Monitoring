@@ -3,24 +3,27 @@ import json
 import pandas as pd
 from datetime import datetime
 from .models import Data
+from .actives import actives
 
-def get_context_grath(param):
+def get_context_grath(param, active):
     all_data = Data.objects.all()
+    active_list = list(set(x['code'] for x in list(Data.objects.values('code'))))
     dt, ds = [],[],
     opyl, opys, opfl, opfs = [],[],[],[]
     cpyl, cpys, cpfl, cpfs = [],[],[],[]
     if len(all_data) > 0:
         for line in all_data:
-            dt.append(line.datetime)
-            opyl.append(line.open_pos_yur_long)
-            opys.append(line.open_pos_yur_short)
-            opfl.append(line.open_pos_fiz_long)
-            opfs.append(line.open_pos_fiz_short)
-            cpyl.append(line.number_persons_yur_long)
-            cpys.append(line.number_persons_yur_short)
-            cpfl.append(line.number_persons_fiz_long)
-            cpfs.append(line.number_persons_fiz_short)
-            ds.append(line.datetime[0:10])
+            if line.code == active:
+                dt.append(line.datetime)
+                opyl.append(line.open_pos_yur_long)
+                opys.append(line.open_pos_yur_short)
+                opfl.append(line.open_pos_fiz_long)
+                opfs.append(line.open_pos_fiz_short)
+                cpyl.append(line.number_persons_yur_long)
+                cpys.append(line.number_persons_yur_short)
+                cpfl.append(line.number_persons_fiz_long)
+                cpfs.append(line.number_persons_fiz_short)
+                ds.append(line.datetime[0:10])
         ds = sorted(list(set(ds)))
         fs = pd.date_range(datetime.strptime(ds[0],'%Y-%m-%d'),
                 datetime.strptime(ds[-1],'%Y-%m-%d')).strftime('%Y-%m-%d').tolist()
@@ -30,6 +33,8 @@ def get_context_grath(param):
             'dt': dt[::-1], 
             'all_date': ds,
             'weekends': weekend,
+            'actives': actives,
+            'active_list':active_list,
         }
 
         if param == 'gr_data_op':
@@ -38,10 +43,7 @@ def get_context_grath(param):
                 'data_2':opys[::-1],
                 'data_3':opfl[::-1],
                 'data_4':opfs[::-1],
-                'title_1':'График «Открытые позиции. Юридические лица (Длинные)»',
-                'title_2':'График «Открытые позиции. Юридические лица (Короткие)»',
-                'title_3':'График «Открытые позиции. Физические лица (Длинные)»',
-                'title_4':'График «Открытые позиции. Физические лица (Короткие)»',
+                'main_title':f'Открытые позиции. Актив «{active}»',
             })
         elif param == 'gr_data_np':
             context.update({
@@ -49,10 +51,7 @@ def get_context_grath(param):
                 'data_2':cpys[::-1],
                 'data_3':cpfl[::-1],
                 'data_4':cpfs[::-1],
-                'title_1':'График «Количество лиц. Юридические лица (Длинные)»',
-                'title_2':'График «Количество лиц. Юридические лица (Короткие)»',
-                'title_3':'График «Количество лиц. Физические лица (Длинные)»',
-                'title_4':'График «Количество лиц. Физические лица (Короткие)»',
+                'main_title':f'Количество лиц. Актив «{active}»',
             })
         return context
     else: 
@@ -67,6 +66,8 @@ def get_context_grath(param):
             'title_3':'',
             'title_4':'',
             'all_date': [],
-            'weekends': []
+            'weekends': [],
+            'actives': actives,
+            'active_list':active_list,
         }
         return context  

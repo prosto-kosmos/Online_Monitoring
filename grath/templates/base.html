@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title> {% block title %} {% endblock %}</title>
@@ -31,7 +31,6 @@
     .wrapper_chart {
         display: flex;
         justify-content: space-between;
-        margin-top: 20px;
         margin-left: 10px;
         margin-right: 10px;
     }
@@ -41,7 +40,7 @@
 </head>
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand">Online-мониторинг</a>
+    <a class="navbar-brand">{% block nav-title %} Добро пожаловать! {% endblock %}</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -54,22 +53,115 @@
             <a class="nav-link" href="{% url "data_url" %}">Таблица<br>данных</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "gr_data_op" %}">Графики по данным.<br>Открытые позиции</a>
+            <a class="nav-link" data-toggle="modal" data-target="#grdataModalOP">Графики по данным.<br>Открытые позиции</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "gr_data_np" %}">Графики по данным.<br>Количество лиц</a>
+            <a class="nav-link" data-toggle="modal" data-target="#grdataModalNP">Графики по данным.<br>Количество лиц</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "gr_online_op" %}">Онлайн-графики.<br>Открытые позиции</a>
+            <a class="nav-link" data-toggle="modal" data-target="#onlineModalOP">Онлайн-графики.<br>Открытые позиции</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "gr_online_np" %}">Онлайн-графики.<br>Количество лиц</a>
+            <a class="nav-link" data-toggle="modal" data-target="#onlineModalNP">Онлайн-графики.<br>Количество лиц</a>
           </li>
         </ul>
       </div>
     </nav>
 
     {% block content %} {% endblock %}
+    
+
+    <!-- Окна выбора активов, необходимо убрать повторение -->
+    <!-- 1 -->
+    <div class="modal fade" id="grdataModalOP" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Выберите актив для построения графика по данным</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {% for ac in active_list %}
+              <a class="btn btn-outline-secondary btn-lg btn-block" href="{% url "gr_data_op" %}?active={{ac}}" role="button">{{ac}}</a>
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="modal fade" id="grdataModalNP" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Выберите актив для построения графика по данным</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {% for ac in active_list %}
+              <a class="btn btn-outline-secondary btn-lg btn-block" href="{% url "gr_data_np" %}?active={{ac}}" role="button">{{ac}}</a>
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="modal fade" id="onlineModalOP" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Выберите актив для построения онлайн-графика</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {% for ac in actives %}
+              <a class="btn btn-outline-secondary btn-lg btn-block" href="{% url "gr_online_op" %}?active={{ac}}" role="button">{{ac}}</a>
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="modal fade" id="onlineModalNP" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Выберите актив для построения онлайн-графика</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {% for ac in actives %}
+              <a class="btn btn-outline-secondary btn-lg btn-block" href="{% url "gr_online_np" %}?active={{ac}}" role="button">{{ac}}</a>
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
 
 </body>
 </html>

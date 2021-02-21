@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 {load static}
 
-{% block title %} Графики {% endblock %}
+{% block title %} Графики по данным {% endblock %}
+{% block nav-title %} Графики по данным<br> {{main_title}}{% endblock %}
+
 
 {% block content %}
-<div class="wrapper_chart_top">
-    <div id="chart_2" class = "chart_part"></div>
-    <div id="chart_4" class = "chart_part"></div>
-</div>
-<div class="wrapper_chart">
-    <div id="chart_1" class = "chart_part"></div>
-    <div id="chart_3" class = "chart_part"></div>
+<div class="content">
+    <div class="wrapper_chart_top">
+        <div id="chart_2" class = "chart_part"></div>
+        <div id="chart_4" class = "chart_part"></div>
+    </div>
+    <div class="wrapper_chart">
+        <div id="chart_1" class = "chart_part"></div>
+        <div id="chart_3" class = "chart_part"></div>
+    </div>
 </div>
 <script>
     let ox = [];
@@ -61,57 +65,94 @@
         sh.shift();
         
         let layout_1 = {
-            title: {text:'{{title_1}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1],},
+            // title: {text:'{{title_1}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1],},
             xaxis: {type: 'date',title: ''},
             yaxis: {title: ''},
+            margin: {
+                r: 0,
+                b: 0,
+                t: 0
+            },
             shapes: sh
         };
         let layout_2 = {
-            title: {text:'{{title_2}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1],},
-            xaxis: {type: 'date',title: ''},
+            // title: {text:'{{title_2}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1],},
+            xaxis: {type: 'null',title: ''},
             yaxis: {title: ''},
+            margin: {
+                r: 0,
+                b: 0,
+                t: 0
+            },
             shapes: sh
         };
         let layout_3 = {
-            title: {text:'{{title_3}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1],},
+            // title: {text:'{{title_3}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1],},
             xaxis: {type: 'date',title: ''},
             yaxis: {title: ''},
+            margin: {
+                r: 0,
+                b: 0,
+                t: 0
+            },
             shapes: sh
         };
         let layout_4 = {
-            title: {text:'{{title_4}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1], size: '8'},
+            // title: {text:'{{title_4}}<br>c ' + ox[0] + ' по ' + ox[ox.length - 1], size: '8'},
             xaxis: {type: 'date',title: ''},
             yaxis: {title: ''},
+            margin: {
+                r: 0,
+                b: 0,
+                t: 0
+            },
             shapes: sh
         };
 
+        var config = {responsive: true}
         Plotly.plot('chart_1',[{
             x:ox,
             y:{{data_1}},
             type:'line',
             line : {color: 'green'},
-        }],layout_1);  
+            hovertemplate: '%{x}<br><b><i>Значение</i></b>: %{y}<extra></extra>',
+        }],layout_1, config);  
 
         Plotly.plot('chart_2',[{
             x:ox,
             y:{{data_2}},
             type:'line',
             line : {color: 'red'},
-        }],layout_2); 
+            hovertemplate: '%{x}<br><b><i>Значение</i></b>: %{y}<extra></extra>',
+        }],layout_2, config); 
 
         Plotly.plot('chart_3',[{
             x:ox,
             y:{{data_3}},
             type:'line',
             line : {color: 'green'},
-        }],layout_3); 
+            hovertemplate: '%{x}<br><b><i>Значение</i></b>: %{y}<extra></extra>',
+        }],layout_3, config); 
 
         Plotly.plot('chart_4',[{
             x:ox,
             y:{{data_4}},
             type:'line',
             line : {color: 'red'},
-        }],layout_4);      
+            hovertemplate: '%{x}<br><b><i>Значение</i></b>: %{y}<extra></extra>',
+        }],layout_4, config);      
     } 
+
+    window.addEventListener('resize', function() {
+        var update = {
+            height: (document.documentElement.clientHeight - 100) / 2,
+            width: (document.documentElement.clientWidth / 2) - 15
+        };
+
+        Plotly.relayout('chart_1', update);
+        Plotly.relayout('chart_2', update);
+        Plotly.relayout('chart_3', update);
+        Plotly.relayout('chart_4', update);
+    });
 </script>
 {% endblock %}

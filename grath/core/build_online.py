@@ -4,6 +4,7 @@ import pandas
 from datetime import datetime
 
 from .models import Data
+from .actives import actives
 
 
 
@@ -15,17 +16,19 @@ def get_date_list(self, date_first, date_second):
     return out[::-1]
 
 
-def get_context_online(param, request):
+def get_context_online(param, active, request):
+    active_list = list(set(x['code'] for x in list(Data.objects.values('code'))))
     try:
         login = request.COOKIES["login"]
         password = request.COOKIES["password"]
-        active = request.COOKIES["active"]
     except KeyError:
         return {
             'dt':[],
             'data':[],
             'islogin': False,
             'message':'',
+            'actives': actives,
+            'active_list':active_list,
         }
         
     else:
@@ -46,6 +49,8 @@ def get_context_online(param, request):
                 'data':[],
                 'islogin': False,
                 'message': 'Не удалось получить данные с сайта moex.com',
+                'actives': actives,
+                'active_list':active_list,
             }
 
         data = json.loads(req.text)['futoi']['data']
@@ -76,6 +81,8 @@ def get_context_online(param, request):
             'dt': dt[::-1],
             'islogin': True,
             'message':'',
+            'actives': actives,
+            'active_list':active_list,
         }
         
         if param == 'gr_online_op':
@@ -84,11 +91,9 @@ def get_context_online(param, request):
                 'data_2':opys[::-1],
                 'data_3':opfl[::-1],
                 'data_4':opfs[::-1],
-                'title_1':'Онлайн-график «Открытые позиции. Юридические лица (Длинные)»',
-                'title_2':'Онлайн-график «Открытые позиции. Юридические лица (Короткие)»',
-                'title_3':'Онлайн-график «Открытые позиции. Физические лица (Длинные)»',
-                'title_4':'Онлайн-график «Открытые позиции. Физические лица (Короткие)»',
+                'main_title':f'Открытые позиции. Актив «{active}»',
                 'param':'open_pos',
+                'active':active,
             })
         elif param == 'gr_online_np':
             context.update({
@@ -96,20 +101,18 @@ def get_context_online(param, request):
                 'data_2':cpys[::-1],
                 'data_3':cpfl[::-1],
                 'data_4':cpfs[::-1],
-                'title_1':'Онлайн-график «Количество лиц. Юридические лица (Длинные)»',
-                'title_2':'Онлайн-график «Количество лиц. Юридические лица (Короткие)»',
-                'title_3':'Онлайн-график «Количество лиц. Физические лица (Длинные)»',
-                'title_4':'Онлайн-график «Количество лиц. Физические лица (Короткие)»',
+                'main_title':f'Количество лиц. Актив «{active}»',
                 'param':'num_pers',
+                'active':active,
             })
         return context
 
 
-def get_new_points(count_points, request, param):
+def get_new_points(count_points, active, request, param):
+    active_list = list(set(x['code'] for x in list(Data.objects.values('code'))))
     try:
         login = request.COOKIES["login"]
         password = request.COOKIES["password"]
-        active = request.COOKIES["active"]
     except KeyError:
         return json.dumps({
             'x':[],
@@ -117,6 +120,8 @@ def get_new_points(count_points, request, param):
             'y2':[],
             'y3':[],
             'y4':[],
+            'actives': actives,
+            'active_list':active_list,
         })
         
     else:
@@ -138,6 +143,8 @@ def get_new_points(count_points, request, param):
                 'y2':[],
                 'y3':[],
                 'y4':[],
+                'actives': actives,
+                'active_list':active_list,
             })
 
         data = json.loads(req.text)['futoi']['data']
@@ -171,6 +178,8 @@ def get_new_points(count_points, request, param):
                 'y2':[],
                 'y3':[],
                 'y4':[],
+                'actives': actives,
+                'active_list':active_list,
             })
         else:
             dt = dt[:(len(dt)-count_points)]
@@ -190,6 +199,8 @@ def get_new_points(count_points, request, param):
                 'y2':opys[::-1],
                 'y3':opfl[::-1],
                 'y4':opfs[::-1],
+                'actives': actives,
+                'active_list':active_list,
             })
         elif param == 'num_pers':
             return json.dumps({
@@ -198,4 +209,6 @@ def get_new_points(count_points, request, param):
                 'y2':cpys[::-1],
                 'y3':cpfl[::-1],
                 'y4':cpfs[::-1],
+                'actives': actives,
+                'active_list':active_list,
             })

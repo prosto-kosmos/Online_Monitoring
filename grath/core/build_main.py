@@ -1,38 +1,41 @@
 from time import sleep
-from .get_all_data import get_data_moex, push_data, get_date_list
+from .data_processing import get_data_moex, push_data, get_date_list
 from .models import Data
+from .actives import actives
 
 
-def get_context_main(date_begin, date_end, login, password, active):
+def get_context_main(date_begin, date_end, login, password, active_list):
     # очищаем таблицу со старыми данными
     Data.objects.all().delete()
 
+    # получаем данные с сайта посуточно
     date_list = get_date_list(date_begin, date_end)
-
     all_data = list()
     for i in range(len(date_list)):
         try:
-            all_data.append(get_data_moex(date_list[i], active, login, password))
-        except Exception:
+            all_data.append(get_data_moex(date_list[i], login, password, active_list))
+        except Exception as e:
+            print(e)
             return {
                 'login': login, 
                 'password': password,
                 'date': date_begin, 
-                'active': active,
                 'message':'Ошибка загрузки данных с сайта moex.com',
+                'active_list': active_list,
+                'actives': actives,
             }
 
-
+    # посуточно заносим данные в БД
     for i in range(len(all_data)):
-        data = all_data[i][0]
-        dop_data = all_data[i][1]
-        push_data(data, dop_data)
+        data = all_data[i]
+        push_data(data)
 
     context = {
         'login': login, 
         'password': password,
         'date': date_begin, 
-        'active': active,
+        'active_list':active_list,
+        'actives': actives,
     }
 
     if str(date_begin) == str(date_end)[:10]:
