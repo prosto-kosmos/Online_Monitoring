@@ -4,12 +4,9 @@ Django web application that allows you to view the statistics of the exchange si
 
 ## How to use
 
-For the app to work, you need to install Docker
-https://docs.docker.com/engine/install/ubuntu/
-
 Then сlone this repository and go to the project directory
 
-    git clone https://github.com/prosto-kosmos/online_monitoring
+    git clone https://github.com/prosto-kosmos/Online_monitoring
     cd online_monitoring/
 
 Install the venv library if it is not installed
@@ -29,14 +26,6 @@ Go to the application folder, perform migrations, and start the server
 
     cd grath/
     python manage.py migrate
-    python manage.py runserver
+    python manage.py runserver --insecure
 
-Open a new terminal in the root directory of the project. Then activate the environment variable and launch the container with redis
-
-    source venv/bin/activate
-    sudo docker run -d -p 6379:6379 redis
-    
-Go to the folder with the app and launch the worker
-
-    cd grath/
-    celery -A grath worker -l info
+Open `127.0.0.1:8000` in a browser
